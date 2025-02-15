@@ -1,0 +1,53 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+enum VisitorStatus {
+    PENDING
+    CHECKED_IN
+    CHECKED_OUT
+    OVERSTAY
+    CANCELLED
+}
+
+enum UserRole {
+    EMPLOYEE
+    ADMIN
+    SECURITY
+}
+
+model Visitor {
+    id           String        @id @default(auto()) @map("_id") @db.ObjectId
+    name         String
+    email        String?
+    phone        String?
+    type         String // e.g., "Contract Staff", "Vendor"
+    purpose      String // e.g., "Meeting"
+    office       String
+    host         User?         @relation(fields: [hostId], references: [id]) // Made optional with "?"
+    hostId       String?       @db.ObjectId // Made optional with "?"
+    checkInTime  DateTime?
+    checkOutTime DateTime?
+    status       VisitorStatus
+    selfCheckIn  Boolean       @default(false)
+    notes        String?
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+}
+
+model User {
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    email     String    @unique
+    phone     String?
+    role      UserRole
+    office    String
+    visitors  Visitor[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}

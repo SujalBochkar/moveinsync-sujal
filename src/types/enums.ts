@@ -1,0 +1,13 @@
+export enum VisitorStatus {
+  PENDING = "PENDING",
+  CHECKED_IN = "CHECKED_IN",
+  CHECKED_OUT = "CHECKED_OUT",
+  OVERSTAY = "OVERSTAY",
+  CANCELLED = "CANCELLED",
+}
+
+export enum UserRole {
+  EMPLOYEE = "EMPLOYEE",
+  ADMIN = "ADMIN",
+  SECURITY = "SECURITY",
+}
